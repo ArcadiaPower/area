@@ -8,6 +8,7 @@ end
 require 'area/array'
 require 'area/integer'
 require 'area/string'
+require 'area/finder'
 
 module Area
 
@@ -16,11 +17,11 @@ module Area
 
   # there is probably a better way to do this...
   if RUBY_VERSION.to_f >= 1.9
-    @area_codes = CSV.read(area_path)
-    @zip_codes = CSV.read(zip_path)
+    @area_codes = Area::Finder.new(CSV.read(area_path))
+    @zip_codes = Area::Finder.new(CSV.read(zip_path))
   else
-    @area_codes = FasterCSV.parse(area_path)
-    @zip_codes = FasterCSV.parse(zip_path)
+    @area_codes = Area::Finder.new(FasterCSV.parse(area_path))
+    @zip_codes = Area::Finder.new(FasterCSV.parse(zip_path))
   end
 
   def self.area_codes
